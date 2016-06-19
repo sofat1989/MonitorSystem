@@ -1,0 +1,38 @@
+[
+  {
+    "hostIP":"192.168.1.117",    
+    "http": false,
+    "hostPort":"8010",
+    "httpmethod":[
+       {"method":"getMemory"}, 
+       {"method":"getCpuInfo"},
+       {"method":"getBandWidth"}
+    ],
+    "ssh": true,
+    "sshusername": "root",
+    "sshpasswd": "iloveyou52917",
+    "sshmethod":[
+       {"method":"cat /proc/meminfo"}, 
+       {"method":"shell getcpu.sh"},
+    ],
+    "ping": false       
+  },
+  {  
+     "hostIP":"www.baidu.com",       
+     "http":false,
+     "hostPort":"8010",
+     "httpmethod":[
+        {"method":"getMemory"}, 
+        {"method":"getCpuInfo"},
+        {"method":"getBandWidth"}          
+      ],
+     "ssh": false,
+     "sshusername": "root",
+     "sshpasswd": "123456",
+     "sshmethod":[
+       {"method":"cat /proc/meminfo"}, 
+       {"method":"shell getcpu.sh"},
+     ],   
+     "ping": false      
+   }
+]
