@@ -1,6 +1,6 @@
 package my.ebay.MonitorSystem;
 
-public class BasicCustEvent{
+public class BasicCustEvent implements Runnable{
 	
 	protected String task = "";
 	protected String hostname = "";
@@ -21,5 +21,10 @@ public class BasicCustEvent{
 	public String handle() {
 		// TODO 自动生成的方法存根
 		return null;
+	}
+
+	public void run() {
+		// TODO 自动生成的方法存根
+		
 	}
 }

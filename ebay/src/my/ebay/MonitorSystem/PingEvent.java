@@ -8,7 +8,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
-public class PingEvent extends BasicCustEvent implements Runnable{
+public class PingEvent extends BasicCustEvent{
 	 
     public static int pingtimes = 3;
     public static int timeout = 3000;
@@ -47,6 +47,10 @@ public class PingEvent extends BasicCustEvent implements Runnable{
 		}
     }
 	public PingEvent(String hostname, String task) {
+		super(hostname, task);		
+	}
+	
+	public PingEvent(String hostname, String task, String[] params) {
 		super(hostname, task);		
 	}	
 		
@@ -101,7 +105,7 @@ public class PingEvent extends BasicCustEvent implements Runnable{
 			 } 
 		}
 		Utils.debugprint(line);
-		Pattern unreach_pattern = Pattern.compile("(Destination Host Unreachable)|(\u76ee\u6807\u4e3b\u673a\u65e0\u6cd5\u8bbf\u95ee)",  Pattern.CASE_INSENSITIVE); 
+		Pattern unreach_pattern = Pattern.compile("(Destination Host Unreachable)|(\u76ee\u6807\u4e3b\u673a\u65e0\u6cd5\u8bbf\u95ee)|(\u65e0\u6cd5\u8bbf\u95ee\u76ee\u6807\u4e3b\u673a)",  Pattern.CASE_INSENSITIVE); 
 		Matcher unrech_matcher = unreach_pattern.matcher(line); 
 		while (unrech_matcher.find()) { 
 			Utils.debugprint("matchresult unreach" + unrech_matcher.group(1));

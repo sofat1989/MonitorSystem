@@ -14,4 +14,10 @@ public class Utils {
 		if (debugflag)
 			e.printStackTrace(System.err);
 	}
+	public static void saveIntoMySql(String str) {
+		
+	}
+	public static void saveIntoFile(String str) {
+		
+	}
 }

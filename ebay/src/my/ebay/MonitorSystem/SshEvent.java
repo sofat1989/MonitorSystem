@@ -9,7 +9,7 @@ import ch.ethz.ssh2.Connection;
 import ch.ethz.ssh2.Session;
 import ch.ethz.ssh2.StreamGobbler;
 
-public class SshEvent extends BasicCustEvent implements Runnable{	
+public class SshEvent extends BasicCustEvent{	
 	 
     private String user = "";
     private String passwd = "";
@@ -18,6 +18,12 @@ public class SshEvent extends BasicCustEvent implements Runnable{
 		this.user = username;
 		this.passwd = password;		
 	}	
+	
+	public SshEvent(String hostname,String task, String[] params) {
+		super(hostname, task);	
+		this.user = params[0];
+		this.passwd = params[1];		
+	}
 	
 	//
 	@Override

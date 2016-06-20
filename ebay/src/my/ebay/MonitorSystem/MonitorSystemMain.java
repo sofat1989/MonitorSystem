@@ -55,6 +55,11 @@ public class MonitorSystemMain extends Thread
         		JSONObject taskobject = JSONObject.fromObject(task);
         		String hostIP = taskobject.getString("hostIP");
         		
+        		if (!isValid(hostIP)) {
+        			// if the hostname is NOT valid, then skip
+        			continue;
+        		}
+        			
     	    	// get http monitor method        		 
     	    	if (taskobject.getBoolean("http")) {
     	    		String hostPort = taskobject.getString("hostPort");
@@ -88,7 +93,12 @@ public class MonitorSystemMain extends Thread
         }        
     }
     
-    public static void main(String[] args)
+    private boolean isValid(String hostIP) {
+		// TODO check the validity of hostIP and domain name
+		return true;
+	}
+
+	public static void main(String[] args)
     {
         Thread thread = new MonitorSystemMain("workthread");
         thread.start();       

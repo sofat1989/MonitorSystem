@@ -4,10 +4,14 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 
-public class HttpEvent extends BasicCustEvent implements Runnable{	
+public class HttpEvent extends BasicCustEvent{	
 	 
 
 	public HttpEvent(String hostname, String task) {
+		super(hostname, task);		
+	}
+	
+	public HttpEvent(String hostname, String task, String params) {
 		super(hostname, task);		
 	}
 	
