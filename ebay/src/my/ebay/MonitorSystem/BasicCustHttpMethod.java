@@ -13,22 +13,47 @@ import org.apache.commons.httpclient.methods.GetMethod;
 
 public class BasicCustHttpMethod {
 	
+	/**
+	  * get the memory state of target
+	  * @param hostname 
+	  * @return String
+	  * 
+    */
 	public String getMemory(String hostname) {
-		Utils.debugprint("getting memory of " + hostname);
-		return getHttpResponse(hostname, "Memory");
+		// Utils.debugprint("getting memory of " + hostname);
+		return sendAndRecv(hostname, "Memory");
 	}
 	
+	/**
+	  * get the CPU information of target
+	  * @param hostname 
+	  * @return String
+	  * 
+    */
 	public String getCpuInfo(String hostname) {
-		Utils.debugprint("getting cpuinfo of " + hostname);
-		return getHttpResponse(hostname, "CpuInfo");		
+		// Utils.debugprint("getting cpuinfo of " + hostname);
+		return sendAndRecv(hostname, "CpuInfo");		
 	}
 	
+	/**
+	  * get the band width of target
+	  * @param hostname 
+	  * @return String
+	  * 
+    */
 	public String getBandWidth(String hostname) {
-		Utils.debugprint("getting bandwidth of " + hostname);
-		return getHttpResponse(hostname, "BandWidth");
+		// Utils.debugprint("getting bandwidth of " + hostname);
+		return sendAndRecv(hostname, "BandWidth");
 	}
 	
-	public String getHttpResponse(String hostname, String querystring) {
+	/**
+	  * send a GET-METHOD request and receive the response
+	  * @param hostname 
+	  * @param querystring 
+	  * @return String
+	  * 
+    */
+	public String sendAndRecv(String hostname, String querystring) {
 		StringBuffer res = new StringBuffer();
 		HttpClient client = new HttpClient();
 		client.getHttpConnectionManager().getParams().setConnectionTimeout(3000);
@@ -49,19 +74,21 @@ public class BasicCustHttpMethod {
 		    }
 		} catch (URIException e) { 
 			// URI is not legal
-			Utils.resultprint("URI " + hostname + " : URI Exception is occured");
+			// Utils.resultprint("URI " + hostname + " : URI Exception is occured");
+			res.append("URI Exception is occured");
 		} catch (UnsupportedEncodingException e) {
 			// TODO 自动生成的 catch 块
-			Utils.resultprint("URI " + hostname + " : UnsupportedEncoding Exception is occured");
+			// Utils.resultprint("URI " + hostname + " : UnsupportedEncoding Exception is occured");
 			Utils.printStack(e);
+			res.append("UnsupportedEncoding Exception is occured");
 		} catch (IOException e) {
 			// TODO 自动生成的 catch 块
-			Utils.resultprint("URI " + hostname + " : IO Exception is occured");
+			// Utils.resultprint("URI " + hostname + " : IO Exception is occured");
 			Utils.printStack(e);
+			res.append("IO Exception is occured");
 		} finally { 
             method.releaseConnection(); 
-        }
-		Utils.debugprint(res.toString());
+        }		
 		return res.toString();	
 	}
 } 

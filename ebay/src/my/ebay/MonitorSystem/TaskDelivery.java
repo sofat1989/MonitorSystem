@@ -11,10 +11,18 @@ import java.util.List;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
-public class TaskDelivery {	
+public class TaskDelivery {
+	// estimated handling time of each MonitorSystemMain thread
 	private static double everythreadtime = 0.5;
+	// keep MonitorSystemMain threads
 	private static List<MonitorSystemMain> workthread = new ArrayList<MonitorSystemMain>();
 	
+	/**
+	  * read the tasks of each target from JSON file
+	  * @param path 
+	  * @return String
+	  * 
+    */
 	public String ReadTarget (String path) {
 		String filecontent = "";
 		BufferedReader reader = null;
@@ -40,6 +48,13 @@ public class TaskDelivery {
 		return filecontent;		
 	}
 	
+	/**
+	  * read the SLA time to meet clients' requirement
+	  * @param path 
+	  * @param level
+	  * @return int
+	  * 
+    */
 	public int ReadSLATime (String path, int level) {
 		String filecontent = "";
 		BufferedReader reader = null;
@@ -98,6 +113,7 @@ public class TaskDelivery {
 	    	// choose an appropriate worker thread
 	    	while (workeriter.hasNext()) {
 	    		if (!workeriter.next().setTask(task.toString())) {
+	    		  // if failed, choose next worker thead
 	    		  workeriter.next();
 	    		  continue;
 	    		}

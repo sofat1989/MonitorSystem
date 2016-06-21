@@ -14,10 +14,10 @@ public class Utils {
 		if (debugflag)
 			e.printStackTrace(System.err);
 	}
-	public static void saveIntoMySql(String str) {
-		
+	public static boolean saveIntoMySql(String str) {
+		return true;
 	}
-	public static void saveIntoFile(String str) {
-		
+	public static boolean saveIntoFile(String str) {
+		return true;
 	}
 }

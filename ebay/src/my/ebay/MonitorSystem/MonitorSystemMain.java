@@ -22,12 +22,23 @@ public class MonitorSystemMain extends Thread
         this.name = name;   
     }
     
-    public boolean setTask(String task) {
-    	// save tasks using queue 
-    	Utils.debugprint("setTask " + task);
+    /**
+	  * insert the task into queue of current thread. return false, if tasks queue is full.
+	  * @param task 
+	  * @return boolean
+	  * 
+    */
+    public boolean setTask(String task) {    	
+    	// Utils.debugprint("setTask " + task);
     	return taskqueue.offer(task);
     }
     
+    /**
+	  * set the stop flag. 
+	  * @param 
+	  * @return
+	  * 
+    */
     public void setStopFlag() {
     	isStop = true;
     }
@@ -45,13 +56,12 @@ public class MonitorSystemMain extends Thread
 					// TODO 自动生成的 catch 块
 					Utils.printStack(e);
 				} 
-        		Utils.debugprint(name + "is exiting");
+        		Utils.debugprint(name + " is exiting....");
         		break;
         	}
         	if (!(taskqueue.isEmpty())) {
         		// do the task
-        		String task = taskqueue.poll();
-        		Utils.debugprint("getTask " + task);
+        		String task = taskqueue.poll();        		
         		JSONObject taskobject = JSONObject.fromObject(task);
         		String hostIP = taskobject.getString("hostIP");
         		
@@ -64,8 +74,7 @@ public class MonitorSystemMain extends Thread
     	    	if (taskobject.getBoolean("http")) {
     	    		String hostPort = taskobject.getString("hostPort");
     	    		JSONArray httpmethod = taskobject.getJSONArray("httpmethod");    	    		
-    	    		for (int j = 0; j < httpmethod.size(); j++) {
-    	    			Utils.debugprint("httpmethod " + httpmethod.getJSONObject(j).getString("method"));
+    	    		for (int j = 0; j < httpmethod.size(); j++) {    	    			
     	    			// TODO: if the method has parameters
     	    			HttpEvent hpevent = new HttpEvent("http://"+hostIP+":"+hostPort, httpmethod.getJSONObject(j).getString("method"));
     	    			es.execute(hpevent);
@@ -77,8 +86,7 @@ public class MonitorSystemMain extends Thread
     	    		String username = taskobject.getString("sshusername");
     	    		String passwd = taskobject.getString("sshpasswd");
     	    		JSONArray sshmethod = taskobject.getJSONArray("sshmethod");
-   	    		    for (int j = 0; j < sshmethod.size(); j++) {
-   	    		    	Utils.debugprint("sshmethod " + sshmethod.getJSONObject(j).getString("method"));
+   	    		    for (int j = 0; j < sshmethod.size(); j++) {   	    		    	
    	    		    	// TODO: if the method has parameters
    	    		    	SshEvent sshevent = new SshEvent(hostIP, sshmethod.getJSONObject(j).getString("method"), username, passwd);
    	    		    	es.execute(sshevent);
@@ -86,13 +94,20 @@ public class MonitorSystemMain extends Thread
     	    	}
     	    	// get ping monitor method
     	    	if (taskobject.getBoolean("ping")) {    	    		
-    	    		PingEvent pingevent = new PingEvent(hostIP,"");
+    	    		PingEvent pingevent = new PingEvent(hostIP,"ping");
     	    		es.execute(pingevent);
-    	    	}
+    	    	}  	    	    	
+    	    	
         	}
         }        
     }
     
+    /**
+	  * check the validity of hostIP
+	  * @param hostIP 
+	  * @return boolean
+	  * 
+    */
     private boolean isValid(String hostIP) {
 		// TODO check the validity of hostIP and domain name
 		return true;

@@ -3,7 +3,6 @@ package my.ebay.MonitorSystem;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -13,18 +12,22 @@ public class PingEvent extends BasicCustEvent{
     public static int pingtimes = 3;
     public static int timeout = 3000;
     
+    /** returned result **/
     public class returnRes {
+    	// times of success
     	public int successTimes;
+    	// times of unreachable
     	public int unreachableTimes;
+    	// times of time out
     	public int timeoutTimes;
-    	
+    	// latency
     	public int latency;
     	
-    	public returnRes(int suc,int unreach, int timeout ,int lat) {
+    	public returnRes(int suc,int unreach, int tout ,int lat) {
     		this.successTimes = suc;
     		this.latency = lat;
     		this.unreachableTimes = unreach;
-    		this.timeoutTimes = timeout;
+    		this.timeoutTimes = tout;
     	}
     	
     	public String toString() {
@@ -39,20 +42,21 @@ public class PingEvent extends BasicCustEvent{
 			timeoutTimes += everyLineRes.timeoutTimes;
 		}
 		
-		public void update(int suc, int unreach, int timeout, int lat) {
+		public void update(int suc, int unreach, int tout, int lat) {
 			successTimes += suc;
 			latency += lat;
 			unreachableTimes += unreach;
-			timeoutTimes += timeout;
+			timeoutTimes += tout;
 		}
     }
+    
 	public PingEvent(String hostname, String task) {
 		super(hostname, task);		
 	}
 	
 	public PingEvent(String hostname, String task, String[] params) {
 		super(hostname, task);		
-	}	
+	}
 		
 	@Override
 	public String handle() {
@@ -60,6 +64,11 @@ public class PingEvent extends BasicCustEvent{
 		
 	}
 
+	/**
+	  * get the final result of ping	   
+	  * @return String
+	  * 
+   */
 	public String getPingResult() {
 		returnRes res = new returnRes(0,0,0,0);
 		BufferedReader in = null; 
@@ -89,6 +98,12 @@ public class PingEvent extends BasicCustEvent{
 		return res.toString();
 	}
 	
+	/**
+	  * get the result of each line received 
+	  * @param line 
+	  * @return returnRes
+	  * 
+    */
 	private returnRes getEveryLineRes(String line) {
 		// TODO 自动生成的方法存根
 		returnRes res = new returnRes(0,0,0,0);
@@ -103,20 +118,17 @@ public class PingEvent extends BasicCustEvent{
 			 if(succ_matcher.group(1).equals("=")) {				 
 				 latencytemp += Integer.parseInt(succ_matcher.group(2));	
 			 } 
-		}
-		Utils.debugprint(line);
+		}		
 		Pattern unreach_pattern = Pattern.compile("(Destination Host Unreachable)|(\u76ee\u6807\u4e3b\u673a\u65e0\u6cd5\u8bbf\u95ee)|(\u65e0\u6cd5\u8bbf\u95ee\u76ee\u6807\u4e3b\u673a)",  Pattern.CASE_INSENSITIVE); 
 		Matcher unrech_matcher = unreach_pattern.matcher(line); 
-		while (unrech_matcher.find()) { 
-			Utils.debugprint("matchresult unreach" + unrech_matcher.group(1));
+		while (unrech_matcher.find()) {			
 			unreachtemp++;
 		}
 		
 		// timeout_pattern = Pattern.compile(new String("\u8bf7\u6c42\u8d85\u65f6".getBytes("UTF-8"), "UTF-8"), Pattern.CASE_INSENSITIVE);
 		Pattern timeout_pattern = Pattern.compile("(Request timed out)|(\u8bf7\u6c42\u8d85\u65f6)", Pattern.CASE_INSENSITIVE);
 		Matcher timeout_matcher = timeout_pattern.matcher(line);
-		while (timeout_matcher.find()) { 
-			Utils.debugprint("matchresult timeout" + timeout_matcher.group(1));
+		while (timeout_matcher.find()) {			
 			timeouttemp++;
 		}
 		
@@ -126,8 +138,9 @@ public class PingEvent extends BasicCustEvent{
 
 	public void run() {
 		// TODO 自动生成的方法存根
-		Utils.debugprint("I am is ping event");
+		Utils.debugprint("I am a ping event, and my task is " + getTask() + ", my hostname is " + getHostName());
 		String res = getPingResult();
-		Utils.resultprint(res);		
+		Utils.resultprint("Task " + getTask() + " of " + getHostName() + " : "+ res);		
+		Utils.debugprint("Task " + getTask() + " of  " + getHostName() + " is finished");
 	}
 }
