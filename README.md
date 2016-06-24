@@ -149,17 +149,12 @@ java的`checked exception`是在是太多了，利于调试，但也带来不少
 2. 运行target（eg.web server)  
 为了模拟target，提供了一个简单的程序，它能够监听网络接口，并能解析get method。根据get query string 返回一个固定的值。 源码在javaserver文件夹内  
 Windows:　　
-运行`javaserver.exe`     
-Linux:  
-  
-		cd javaserver  
-		java -cp . my.java.server.MyServer
+运行`javaserver.bat`     
+Linux:　　  运行`javaserver.sh`
 
 3. 运行MonitorSystem  
-Windwons:　　 运行`MonitorSystem.exe`  
-Linux:
-		cd ebay/bin
-		java -cp . my.ebay.MonitorSystem.TaskDelivery
+Windwons:　　 运行`MonitorSystem.bat`  
+Linux:   　　  运行`MonitorSystem.sh`
 
 #### 测试SSH方法
 1. 配置monitortarget.json，根据你感兴趣的东西，添加合适的执行命令  
@@ -196,3 +191,24 @@ Linux:
 ---
 ### 系统维护
 类`Utils`中定义了`debugprint`和`printStack`函数。其输出由`debugflag`控制。当`debugflag`设置为true，就会在控制台输出调试信息。如果系统出现了异常，可以打开这个开关，进行定位。
+#### 代码修改
+如果想要对代码修改，该工程能够直接在eclipse中导入，修改并编译
+也可以直接修改文件，利用gradle进行构建。  
+
+    cd ebay
+	gradle build
+	cd javaserver
+	gradle build
+构建完成以后，执行新的程序，可使用脚本：  
+
+    MonitorSystem_gradle.bat     windows
+	MonitorSystem_gradle.sh      linux
+	javaserver_gradle.bat        windows
+	javaserver_gradle.sh 		 linux
+
+#### 可调整的参数
+
+`TaskDelivery`中的`everythreadtime`：预估一个`MonitorSystemMain`处理一个target需要的时间   
+`MonitorSystemMain`中`MAX_THREAD_NUM`：一个`MonitorSystemMain`能容纳的最大线程数（主要因素还是内存）  
+这两个参数需要根据服务器硬件资源等做一点调整。
+

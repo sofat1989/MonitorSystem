@@ -1,0 +1,2 @@
+dir=`pwd`
+java  -cp $dir/lib/commons-beanutils-1.8.0.jar:$dir/lib/commons-lang-2.5.jar:$dir/lib/commons-logging-1.1.1.jar:$dir/lib/commons-collections-3.2.1.jar:$dir/lib/ezmorph-1.0.6.jar:$dir/lib/json-lib-2.4-jdk15.jar:$dir/lib/commons-codec-1.4.jar:$dir/lib/commons-httpclient-3.0.1.jar:$dir/lib/commons-httpclient-3.1.jar:$dir/lib/commons-httpclient-3.1-rc1.jar:$dir/lib/ganymed-ssh2-build210.jar:$dir/build/libs/ebay-1.0.jar my.ebay.MonitorSystem.TaskDelivery

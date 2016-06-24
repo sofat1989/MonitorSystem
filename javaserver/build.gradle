@@ -1,0 +1,17 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+sourceCompatibility = 1.5
+version = '1.0'
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'Java Server',
+                   'Implementation-Version': version
+    }
+}
+
+sourceSets { 
+	 main { 
+		 java.srcDir "$projectDir/src"
+	 } 
+ }
